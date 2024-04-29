@@ -21,7 +21,7 @@ jobs:
             shc -f "$script" -o "${script%.sh}"
             zip "${script%.sh}_v0.0.${{ github.run_number }}.zip" "${script%.sh}"
           done
-          shasum -a 256 *.tar.gz > sha256.txt
+          shasum -a 256 *.zip > sha256.txt
 
       - name: 🏷️ 发布
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -30,5 +30,5 @@ jobs:
           automatic_release_tag: "v0.0.${{ github.run_number }}"
           prerelease: false
           files: |
-            *.tar.gz
+            *.zip
             sha256.txt
