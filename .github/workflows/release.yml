@@ -1,53 +1,45 @@
-name: 构建和发布脚本
-
+name: Build and Release
 on:
   push:
     branches:
       - main
 
 jobs:
-  build_and_release:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: 检出代码
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: 安装依赖
-      run: sudo apt-get update && sudo apt-get install -y shc
+      - name: Install shc
+        run: sudo apt-get install shc
 
-    - name: 构建并压缩
-      run: |
-        # 获取当前日期作为 tag
-        echo "tag=$(date +%Y%m%d)" >> $GITHUB_ENV
-        
-        # 遍历根目录下的所有文件夹
-        for dir in */; do
-          # 检查文件夹是否存在
-          if [ -d "$dir" ]; then
-            # 遍历文件夹中的所有同名 .sh 文件
-            script="$dir/$(basename "$dir").sh"
-            if [ -f "$script" ]; then
-              # 去掉文件后缀 .sh 以获取输出文件名
-              output_file="${script%.sh}"
-              # 使用 shc 编译脚本
-              shc -r -f "$script" -o "$output_file"
-              
-              # 压缩编译出来的文件为 tar.gz
-              tar -czvf "$output_file.tar.gz" "$output_file"
-              
-              # 移动到一个临时目录，便于后续上传
-              mv "$output_file.tar.gz" ./artifacts/
-            fi
-          fi
-        done
-        
-    - name: 发布
-      uses: actions/create-release@v1
-      with:
-        tag_name: ${{ env.tag }}
-        release_name: ${{ env.tag }}
-        draft: false
-        prerelease: false
-        files: artifacts/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and compress scripts
+        run: |
+          mkdir binaries
+          for script in $(ls *.sh); do
+            shc -f $script -o binaries/${script%.sh}
+            tar -czvf binaries/${script%.sh}.tar.gz -C binaries ${script%.sh}
+          done
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./binaries/${{ matrix.binary }}.tar.gz
+          asset_name: ${{ matrix.binary }}.tar.gz
+          asset_content_type: application/gzip
