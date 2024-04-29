@@ -20,8 +20,8 @@ jobs:
           mkdir binary
           for script in *.sh; do
             shc -f "$script" -o -C binary "${script%.sh}"
-            sudo chmod +x "${script%.sh}"
-            shasum -a 256 "${script%.sh}" >> sha256.txt
+            sudo chmod +x binary/"${script%.sh}"
+            shasum -a 256 binary/"${script%.sh}" >> sha256.txt
           done
 
       - name: 🏷️ 发布
