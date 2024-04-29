@@ -1,4 +1,4 @@
-name: Build and Release
+name: ⚙️ 构建并发布
 
 on:
   push:
@@ -9,35 +9,24 @@ jobs:
   build_and_release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: 🍺 检出代码
         uses: actions/checkout@v2
 
-      - name: Install shc
+      - name: 🧰 安装依赖
         run: sudo apt-get install shc
 
-      - name: Build and compress scripts
+      - name: 🗜️ 构建并压缩
         run: |
           for script in *.sh; do
             shc -f "$script" -o "${script%.sh}"
             tar -czvf "${script%.sh}.tar.gz" "${script%.sh}"
           done
 
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ github.ref_name }}
-      #     release_name: Release ${{ github.ref_name }}
-      #     draft: false
-      #     prerelease: false
-
-      - name: Upload Release Assets
+      - name: 🏷️ 发布
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "v${{ github.run_number }}"
           prerelease: false
           files: |
             *.tar.gz
