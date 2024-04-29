@@ -17,8 +17,9 @@ jobs:
 
       - name: 🗜️ 构建并压缩
         run: |
+          mkdir binary
           for script in *.sh; do
-            shc -f "$script" -o "${script%.sh}"
+            shc -f "$script" -o -C binary "${script%.sh}"
             sudo chmod +x "${script%.sh}"
             shasum -a 256 "${script%.sh}" >> sha256.txt
           done
@@ -30,5 +31,5 @@ jobs:
           automatic_release_tag: "v0.0.${{ github.run_number }}"
           prerelease: false
           files: |
-            "${script%.sh}"
+            binary/*
             sha256.txt
