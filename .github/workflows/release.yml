@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 🧰 安装依赖
-        run: sudo apt-get install shc
+        run: sudo apt-get install shc shasum
 
       - name: 🗜️ 构建并压缩
         run: |
@@ -21,6 +21,7 @@ jobs:
             shc -f "$script" -o "${script%.sh}"
             tar -czvf "${script%.sh}.tar.gz" "${script%.sh}"
           done
+          shasum -a 256 *.tar.gz > SHA256SUMS
 
       - name: 🏷️ 发布
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -30,3 +31,4 @@ jobs:
           prerelease: false
           files: |
             *.tar.gz
+            SHA256SUMS
