@@ -18,7 +18,7 @@ jobs:
     - name: 构建并压缩
       run: |
         # 获取当前日期作为 tag
-        tag=$(date +%Y%m%d%H%M%S)
+        echo "tag=$(date +%Y%m%d)" >> $GITHUB_ENV
         
         # 遍历根目录下的所有文件夹
         for dir in */; do
@@ -44,8 +44,8 @@ jobs:
     - name: 发布
       uses: actions/create-release@v1
       with:
-        tag_name: ${{ tag }}
-        release_name: ${{ tag }}
+        tag_name: ${{ env.tag }}
+        release_name: ${{ env.tag }}
         draft: false
         prerelease: false
         files: artifacts/*
