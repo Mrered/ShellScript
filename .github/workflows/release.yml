@@ -19,7 +19,7 @@ jobs:
         run: |
           for script in *.sh; do
             shc -f "$script" -o "${script%.sh}"
-            tar -czvf "${script%.sh}.tar.gz" "${script%.sh}"
+            tar -czvf "${script%.sh}_v${{ github.run_number }}.tar.gz" "${script%.sh}"
           done
           shasum -a 256 *.tar.gz > SHA256SUMS
 
@@ -27,7 +27,7 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v${{ github.run_number }}"
+          automatic_release_tag: "v0.0.${{ github.run_number }}"
           prerelease: false
           files: |
             *.tar.gz
