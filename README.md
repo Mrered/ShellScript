@@ -1,2 +1,6 @@
 # ShellScript
-自用 ShellScript 小脚本
+
+|     Name      |                  Discription |
+| :-----------: | ---------------------------: |
+|   `makemf`    |                 生成Makefile |
+| `ollamaplist` | 使 Ollama Serve 监听 0.0.0.0 |
