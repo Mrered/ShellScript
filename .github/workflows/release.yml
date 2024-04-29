@@ -19,7 +19,7 @@ jobs:
         run: |
           mkdir binary
           for script in *.sh; do
-            shc -f "$script" -o -C binary "${script%.sh}"
+            shc -f "$script" -o ./binary/"${script%.sh}"
             sudo chmod +x ./binary/"${script%.sh}"
             shasum -a 256 ./binary/"${script%.sh}" >> sha256.txt
           done
