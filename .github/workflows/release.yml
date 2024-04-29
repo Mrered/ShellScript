@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 🧰 安装依赖
-        run: sudo apt-get install shc shasum
+        run: sudo apt-get install shc
 
       - name: 🗜️ 构建并压缩
         run: |
