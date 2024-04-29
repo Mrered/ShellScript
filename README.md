@@ -1,5 +1,7 @@
 # ShellScript
 
+![CI](https://github.com/Mrered/ShellScript/actions/workflows/release.yml/badge.svg) ![license](https://img.shields.io/github/license/Mrered/ShellScript) ![code-size](https://img.shields.io/github/languages/code-size/Mrered/ShellScript) ![repo-size](https://img.shields.io/github/repo-size/Mrered/ShellScript)
+
 ## 内容
 
 |   脚本名称    |             介绍             |
