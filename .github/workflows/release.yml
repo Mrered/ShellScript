@@ -19,8 +19,7 @@ jobs:
         run: |
           for script in *.sh; do
             shc -f "$script" -o "${script%.sh}"
-            sudo chmod +x "${script%.sh}"
-            tar -czvf "${script%.sh}_v0.0.${{ github.run_number }}.tar.gz" "${script%.sh}"
+            zip "${script%.sh}_v0.0.${{ github.run_number }}.zip" "${script%.sh}"
           done
           shasum -a 256 *.tar.gz > sha256.txt
 
