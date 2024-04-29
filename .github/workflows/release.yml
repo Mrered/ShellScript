@@ -15,7 +15,7 @@ jobs:
       - name: 🧰 安装依赖
         run: sudo apt-get install shc
 
-      - name: 🗜️ 构建并压缩
+      - name: ⚙️ 构建
         run: |
           mkdir binary
           for script in *.sh; do
