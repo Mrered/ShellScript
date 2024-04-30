@@ -7,13 +7,13 @@ on:
 
 jobs:
   build_and_release:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: 🍺 检出代码
         uses: actions/checkout@v2
 
       - name: 🧰 安装依赖
-        run: sudo apt-get install shc
+        run: brew install shc
 
       - name: 🗜️ 构建并压缩
         run: |
