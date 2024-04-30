@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # 指定目标文件路径
 target_file="/opt/homebrew/opt/ollama/homebrew.mxcl.ollama.plist"
